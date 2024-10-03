@@ -5,8 +5,10 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { config } from 'process';
 import { Observable } from 'rxjs';
 import { Protected } from 'src/decorators';
 
@@ -14,7 +16,8 @@ import { Protected } from 'src/decorators';
 export class CheckAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private jwtService: JwtService, 
+    private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   canActivate(
@@ -26,9 +29,7 @@ export class CheckAuthGuard implements CanActivate {
 
     const isProtected = this.reflector.get(Protected, context.getHandler());
 
-    if (!isProtected) {
-      return true;
-    }
+
     const bearerToken = request.headers['authorization'];
     if (
       !(bearerToken &&
@@ -39,11 +40,9 @@ export class CheckAuthGuard implements CanActivate {
     }
     const token = bearerToken.split('Bearer ')[1];
 
-    try {
-      const decoded = this.jwtService.verify(token);
-      return true;
-    } catch (err) {
-      throw new UnauthorizedException('Invalid or expired token');
-    }
+      this.jwtService.verify(token, this.configService.get('jwt.accessKey'))
+    
+
+      return true
   }
 }
