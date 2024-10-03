@@ -13,21 +13,26 @@ const sequelize_1 = require("@nestjs/sequelize");
 const serve_static_1 = require("@nestjs/serve-static");
 const _config_1 = require("./config");
 const _modules_1 = require("./modules");
-const users_module_1 = require("./modules/users/users.module");
-const models_1 = require("./modules/users/models");
+const check_auth_guard_1 = require("./guards/check-auth.guard");
+const core_1 = require("@nestjs/core");
+const jwt_1 = require("@nestjs/jwt");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            jwt_1.JwtModule.register({
+                secret: 'mySecret',
+                signOptions: { expiresIn: '60m' },
+            }),
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 load: [_config_1.appConfig, _config_1.dbConfig],
             }),
             serve_static_1.ServeStaticModule.forRoot({
-                serveRoot: "/uploads",
-                rootPath: "./uploads"
+                serveRoot: '/uploads',
+                rootPath: './uploads',
             }),
             sequelize_1.SequelizeModule.forRootAsync({
                 imports: [config_1.ConfigModule],
@@ -41,9 +46,9 @@ exports.AppModule = AppModule = __decorate([
                             username: config.get('database.user'),
                             password: config.get('database.password'),
                             database: config.get('database.dbName'),
-                            models: [_modules_1.Category, _modules_1.Food, models_1.Users],
+                            models: [_modules_1.Category, _modules_1.Food, _modules_1.User],
                             synchronize: true,
-                            logging: console.log,
+                            logging: false,
                             autoLoadModels: true,
                         };
                     }
@@ -55,8 +60,14 @@ exports.AppModule = AppModule = __decorate([
             _modules_1.CategoryModule,
             _modules_1.FoodModule,
             _modules_1.UploadModule,
-            users_module_1.UsersModule
+            _modules_1.UsersModule,
         ],
+        providers: [
+            {
+                useClass: check_auth_guard_1.CheckAuthGuard,
+                provide: core_1.APP_GUARD
+            }
+        ]
     })
 ], AppModule);
 //# sourceMappingURL=app.js.map

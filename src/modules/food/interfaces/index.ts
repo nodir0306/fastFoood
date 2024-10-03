@@ -1,1 +1,1 @@
-export * from './create-food.interfaces'
+export * from './create-food.interfaces';

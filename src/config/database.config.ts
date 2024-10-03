@@ -7,4 +7,3 @@ export const dbConfig = () => ({
     user: process.env.DB_USER,
   },
 });
-

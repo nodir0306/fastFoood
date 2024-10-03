@@ -10,5 +10,5 @@ export class Category extends Model {
   name: string;
 
   @HasMany(() => Food)
-  foods: Food[]
+  foods: Food[];
 }

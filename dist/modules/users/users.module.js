@@ -18,7 +18,7 @@ let UsersModule = class UsersModule {
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
-        imports: [sequelize_1.SequelizeModule.forFeature([models_1.Users])],
+        imports: [sequelize_1.SequelizeModule.forFeature([models_1.User])],
         controllers: [users_controller_1.UserController],
         providers: [users_service_1.UserService, upload_1.UploadService],
     })

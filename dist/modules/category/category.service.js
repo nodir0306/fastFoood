@@ -26,7 +26,7 @@ let CategoryService = class CategoryService {
     }
     async createCategory(payload) {
         await this.categoryModel.create({
-            name: payload.name
+            name: payload.name,
         });
     }
     async updateCategory(payload) {
@@ -35,8 +35,8 @@ let CategoryService = class CategoryService {
     async deleteCategory(id) {
         await this.categoryModel.destroy({
             where: {
-                id
-            }
+                id,
+            },
         });
     }
 };

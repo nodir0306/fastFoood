@@ -13,7 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { RemoveFileDto } from './dtos';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags("Upload")
+@ApiTags('Upload')
 @Controller('uploads')
 export class UploadController {
   constructor(private service: UploadService) {}

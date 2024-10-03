@@ -17,9 +17,9 @@ class UpdateCategoryDto {
 exports.UpdateCategoryDto = UpdateCategoryDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        example: "Burgers update",
-        description: "Category update name",
-        required: true
+        example: 'Burgers update',
+        description: 'Category update name',
+        required: true,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

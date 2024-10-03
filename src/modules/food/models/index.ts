@@ -1,1 +1,1 @@
-export * from './food.model'
+export * from './food.model';

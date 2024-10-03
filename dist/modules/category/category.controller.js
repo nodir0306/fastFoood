@@ -53,7 +53,10 @@ let CategoryController = class CategoryController {
 exports.CategoryController = CategoryController;
 _CategoryController__service = new WeakMap();
 __decorate([
-    (0, swagger_1.ApiOperation)({ description: 'Barcha categoriesni olish', summary: "Barchasini olish" }),
+    (0, swagger_1.ApiOperation)({
+        description: 'Barcha categoriesni olish',
+        summary: 'Barchasini olish',
+    }),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

@@ -1,1 +1,1 @@
-export * from './create-food.dtos'
+export * from './create-food.dtos';

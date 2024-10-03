@@ -1,14 +1,11 @@
+import { User } from './models';
+import { CreateUserRequest } from './interfaces';
 import { UploadService } from '../upload';
-import { Users } from './models';
-import { CreateUserDto } from './dto';
 export declare class UserService {
-    #private;
     private userModel;
-    constructor(userModel: typeof Users, upload: UploadService);
-    getAllUsers(): Promise<Users[]>;
-    createUser(payload: CreateUserDto, image?: Express.Multer.File): Promise<void>;
-    updateUser(id: number, payload: CreateUserDto & {
-        image?: string;
-    }): Promise<void>;
-    deleteUser(id: string): Promise<void>;
+    private uploadService;
+    constructor(userModel: typeof User, uploadService: UploadService);
+    getAllUsers(): Promise<User[]>;
+    createUser(payload: CreateUserRequest): Promise<void>;
+    deleteUser(userId: number): Promise<void>;
 }

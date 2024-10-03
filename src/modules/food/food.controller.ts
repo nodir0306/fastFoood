@@ -28,6 +28,7 @@ export class FoodController {
   }
 
   @Get()
+  
   async getAllFoods(): Promise<Food[]> {
     return await this.#_service.getAllFoods();
   }
@@ -45,7 +46,6 @@ export class FoodController {
     });
   }
 
-  
   @Patch('/update/:id')
   @UseInterceptors(FileInterceptor('image', multerConfig))
   async updateFood(
@@ -53,15 +53,16 @@ export class FoodController {
     @Body() updateFoodPayload: UpdateFoodDto,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<void> {
-    await this.#_service.updateFood(id, { ...updateFoodPayload, image: image?.originalname });
+    await this.#_service.updateFood(id, {
+      ...updateFoodPayload,
+      image: image?.originalname,
+    });
   }
-  
 
   @Delete('/delete/:id')
   async deleteFood(@Param('id') id: string): Promise<void> {
     await this.#_service.deleteFood(id);
   }
-
 
   @Patch('/top-food/:id')
   async createDailyTopFood(

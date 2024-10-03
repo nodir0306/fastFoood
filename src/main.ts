@@ -3,14 +3,25 @@ import { ConfigService } from '@nestjs/config';
 import * as morgan from 'morgan';
 import { AppModule } from './app';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ExceptionHandlerFilter } from './filters';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory(errors) {
+        const errorMsgs = errors.map((err) =>
+          Object.values(err.constraints).join(', '),
+        );
+        throw new BadRequestException(errorMsgs.join(' && '));
+      },
+    }),
+  );
 
-  // SET GLOBAL PREFIX TO /api/v1
   app.setGlobalPrefix('/api/v1');
-
+  app.useGlobalFilters(new ExceptionHandlerFilter());
   const config = new DocumentBuilder()
     .setTitle('Feane restaurant API')
     .setDescription('The feane API description')
@@ -19,8 +30,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-
-  // USE MORGAN IN DEVELOPMENT MODE
   if (process.env?.NODE_ENV?.trim() == 'development') {
     app.use(morgan('tiny'));
   }

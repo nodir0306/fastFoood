@@ -1,2 +1,2 @@
-export * from './create-category.interfaces'
-export * from './update-category.interfaces'
+export * from './create-category.interfaces';
+export * from './update-category.interfaces';

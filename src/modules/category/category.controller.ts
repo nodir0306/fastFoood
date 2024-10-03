@@ -22,7 +22,10 @@ export class CategoryController {
     this.#_service = service;
   }
 
-  @ApiOperation({ description: 'Barcha categoriesni olish', summary: "Barchasini olish" })
+  @ApiOperation({
+    description: 'Barcha categoriesni olish',
+    summary: 'Barchasini olish',
+  })
   @Get()
   async getCategories(): Promise<Category[]> {
     return await this.#_service.getAllCategories();

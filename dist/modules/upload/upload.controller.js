@@ -48,7 +48,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UploadController.prototype, "removeFile", null);
 exports.UploadController = UploadController = __decorate([
-    (0, swagger_1.ApiTags)("Upload"),
+    (0, swagger_1.ApiTags)('Upload'),
     (0, common_1.Controller)('uploads'),
     __metadata("design:paramtypes", [upload_service_1.UploadService])
 ], UploadController);

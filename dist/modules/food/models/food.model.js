@@ -41,7 +41,12 @@ __decorate([
 ], Food.prototype, "isDailyTopFood", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => _modules_1.Category),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, allowNull: false, onDelete: "CASCADE", onUpdate: "NO ACTION" }),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.BIGINT,
+        allowNull: false,
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION',
+    }),
     __metadata("design:type", Number)
 ], Food.prototype, "category_id", void 0);
 __decorate([

@@ -3,19 +3,32 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { appConfig, dbConfig } from '@config';
-import { Category, CategoryModule, Food, FoodModule, UploadModule } from '@modules';
-import { UsersModule } from './modules/users/users.module';
-import { Users } from './modules/users/models';
+import {
+  Category,
+  CategoryModule,
+  Food,
+  FoodModule,
+  UploadModule,
+  User,
+  UsersModule,
+} from '@modules';
+import { CheckAuthGuard } from './guards/check-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    JwtModule.register({
+      secret: 'mySecret',
+      signOptions: { expiresIn: '60m' },
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig, dbConfig],
     }),
     ServeStaticModule.forRoot({
-      serveRoot: "/uploads",
-      rootPath: "./uploads"
+      serveRoot: '/uploads',
+      rootPath: './uploads',
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
@@ -29,10 +42,9 @@ import { Users } from './modules/users/models';
             username: config.get('database.user'),
             password: config.get('database.password'),
             database: config.get('database.dbName'),
-            models: [Category, Food,Users],
+            models: [Category, Food, User],
             synchronize: true,
-            // sync: {force: true},``
-            logging: console.log,
+            logging: false,
             autoLoadModels: true,
           };
         } catch (error) {
@@ -43,7 +55,13 @@ import { Users } from './modules/users/models';
     CategoryModule,
     FoodModule,
     UploadModule,
-    UsersModule
+    UsersModule,
   ],
+  providers: [
+    {
+      useClass: CheckAuthGuard,
+      provide: APP_GUARD
+    }
+  ]
 })
-export class AppModule { }
+export class AppModule {}

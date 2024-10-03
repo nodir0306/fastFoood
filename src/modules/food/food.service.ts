@@ -1,11 +1,15 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Food } from './models';
 import { CreateFoodRequest } from './interfaces';
 import { UploadService } from '../upload';
 import { UpdateFoodRequest } from './interfaces/update-food.interfaces';
-import * as  path from 'path';
-import * as fs from 'fs'
+import * as path from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class FoodService {
@@ -37,12 +41,10 @@ export class FoodService {
   }
 
   async updateFood(id: number, payload: UpdateFoodRequest): Promise<void> {
-   
     const food = await this.foodModel.findByPk(id);
     if (!food) {
       throw new NotFoundException(`Food item with ID ${id} not found`);
     }
-  
 
     await this.foodModel.update(
       {
@@ -55,7 +57,6 @@ export class FoodService {
       { where: { id } },
     );
   }
-  
 
   async deleteFood(id: string): Promise<void> {
     const food = await this.foodModel.findByPk(id);
@@ -68,21 +69,19 @@ export class FoodService {
     await this.foodModel.destroy({ where: { id } });
   }
 
-  async createDailyTopFood(id: number): Promise<void>{
+  async createDailyTopFood(id: number): Promise<void> {
     try {
       const oldDailyFood = await this.foodModel.update(
         { isDailyTopFood: true },
-        { where: { isDailyTopFood: false } }
+        { where: { isDailyTopFood: false } },
       );
-  
+
       await this.foodModel.update(
         { id: id },
-        { where: { isDailyTopFood: true } }
+        { where: { isDailyTopFood: true } },
       );
-    
     } catch (error) {
-      throw new InternalServerErrorException(`Error: ${error}`)
+      throw new InternalServerErrorException(`Error: ${error}`);
     }
-
-}
+  }
 }

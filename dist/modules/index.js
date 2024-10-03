@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./category"), exports);
 __exportStar(require("./food"), exports);
 __exportStar(require("./upload"), exports);
+__exportStar(require("./users"), exports);
 //# sourceMappingURL=index.js.map

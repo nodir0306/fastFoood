@@ -47,7 +47,10 @@ let FoodController = class FoodController {
         });
     }
     async updateFood(id, updateFoodPayload, image) {
-        await __classPrivateFieldGet(this, _FoodController__service, "f").updateFood(id, { ...updateFoodPayload, image: image?.originalname });
+        await __classPrivateFieldGet(this, _FoodController__service, "f").updateFood(id, {
+            ...updateFoodPayload,
+            image: image?.originalname,
+        });
     }
     async deleteFood(id) {
         await __classPrivateFieldGet(this, _FoodController__service, "f").deleteFood(id);
