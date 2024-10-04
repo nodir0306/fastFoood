@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Category } from './models';
 import { CreateCategoryRequest, UpdateCategoryRequest } from './interfaces';
 import { Food } from '../food';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class CategoryService {

@@ -8,6 +8,8 @@ import {
   CategoryModule,
   Food,
   FoodModule,
+  Order,
+  OrderItem,
   UploadModule,
   User,
   UsersModule,
@@ -15,16 +17,17 @@ import {
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import { OrderModule } from './modules/orders/order.module';
 
 @Module({
   imports: [
     JwtModule.register({
       secret: 'mySecret',
-      signOptions: { expiresIn: '60m'},
+      signOptions: { expiresIn: '60m' },
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, dbConfig,jwtConfig],
+      load: [appConfig, dbConfig, jwtConfig],
     }),
     ServeStaticModule.forRoot({
       serveRoot: '/uploads',
@@ -42,9 +45,10 @@ import { JwtModule } from '@nestjs/jwt';
             username: config.get('database.user'),
             password: config.get('database.password'),
             database: config.get('database.dbName'),
-            models: [Category, Food, User],
+            models: [Category, Food, User,Order,OrderItem],
             synchronize: true,
             logging: false,
+            sync: {force: true},
             autoLoadModels: true,
           };
         } catch (error) {
@@ -56,12 +60,13 @@ import { JwtModule } from '@nestjs/jwt';
     FoodModule,
     UploadModule,
     UsersModule,
+    OrderModule,
   ],
   providers: [
     {
       useClass: CheckAuthGuard,
-      provide: APP_GUARD
-    }
-  ]
+      provide: APP_GUARD,
+    },
+  ],
 })
 export class AppModule {}

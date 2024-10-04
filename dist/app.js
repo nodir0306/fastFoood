@@ -16,6 +16,7 @@ const _modules_1 = require("./modules");
 const check_auth_guard_1 = require("./guards/check-auth.guard");
 const core_1 = require("@nestjs/core");
 const jwt_1 = require("@nestjs/jwt");
+const order_module_1 = require("./modules/orders/order.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,7 +29,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                load: [_config_1.appConfig, _config_1.dbConfig],
+                load: [_config_1.appConfig, _config_1.dbConfig, _config_1.jwtConfig],
             }),
             serve_static_1.ServeStaticModule.forRoot({
                 serveRoot: '/uploads',
@@ -46,9 +47,10 @@ exports.AppModule = AppModule = __decorate([
                             username: config.get('database.user'),
                             password: config.get('database.password'),
                             database: config.get('database.dbName'),
-                            models: [_modules_1.Category, _modules_1.Food, _modules_1.User],
+                            models: [_modules_1.Category, _modules_1.Food, _modules_1.User, _modules_1.Order, _modules_1.OrderItem],
                             synchronize: true,
                             logging: false,
+                            sync: { force: true },
                             autoLoadModels: true,
                         };
                     }
@@ -61,13 +63,14 @@ exports.AppModule = AppModule = __decorate([
             _modules_1.FoodModule,
             _modules_1.UploadModule,
             _modules_1.UsersModule,
+            order_module_1.OrderModule,
         ],
         providers: [
             {
                 useClass: check_auth_guard_1.CheckAuthGuard,
-                provide: core_1.APP_GUARD
-            }
-        ]
+                provide: core_1.APP_GUARD,
+            },
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.js.map

@@ -22,22 +22,21 @@ export class ExceptionHandlerFilter implements ExceptionFilter {
       });
     }
     if (exception instanceof HttpException) {
-        return response.status(exception.getStatus()).json({
-          message: exception.message,
-          requestTime,
-          url: request.url,
-          errorName: exception.name,
-          statusCode: exception.getStatus(),
-        });
-      }
-
-      return response.status(500).json({
-        message: exception?.message || 'Internal server error',
+      return response.status(exception.getStatus()).json({
+        message: exception.message,
         requestTime,
         url: request.url,
-        errorName: exception?.name,
-        statusCode: 500,
+        errorName: exception.name,
+        statusCode: exception.getStatus(),
       });
-    
+    }
+
+    return response.status(500).json({
+      message: exception?.message || 'Internal server error',
+      requestTime,
+      url: request.url,
+      errorName: exception?.name,
+      statusCode: 500,
+    });
   }
 }

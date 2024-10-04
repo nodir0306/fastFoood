@@ -18,4 +18,5 @@ __exportStar(require("./category"), exports);
 __exportStar(require("./food"), exports);
 __exportStar(require("./upload"), exports);
 __exportStar(require("./users"), exports);
+__exportStar(require("./orders"), exports);
 //# sourceMappingURL=index.js.map

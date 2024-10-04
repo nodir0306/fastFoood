@@ -28,7 +28,6 @@ export class FoodController {
   }
 
   @Get()
-  
   async getAllFoods(): Promise<Food[]> {
     return await this.#_service.getAllFoods();
   }

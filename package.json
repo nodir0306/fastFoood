@@ -75,6 +75,13 @@
       "json",
       "ts"
     ],
+    "moduleNameMapper": {
+      "@modules": "<rootDir>/modules",
+      "@config": "./src/config",
+      "@decorators": "./src/decorators",
+      "@filters": "./src/filters",
+      "@guards": "./src/guards"
+    },
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {

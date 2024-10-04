@@ -11,22 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
 const jwt_1 = require("@nestjs/jwt");
 const decorators_1 = require("../decorators");
 let CheckAuthGuard = class CheckAuthGuard {
-    constructor(reflector, jwtService) {
+    constructor(reflector, jwtService, configService) {
         this.reflector = reflector;
         this.jwtService = jwtService;
+        this.configService = configService;
     }
     canActivate(context) {
         const ctx = context.switchToHttp();
         const request = ctx.getRequest();
         const isProtected = this.reflector.get(decorators_1.Protected, context.getHandler());
+        const bearerToken = request.headers['authorization'];
         if (!isProtected) {
             return true;
         }
-        const bearerToken = request.headers['authorization'];
         if (!(bearerToken &&
             bearerToken.startsWith('Bearer ') &&
             bearerToken.split('Bearer ')[1]?.length)) {
@@ -34,18 +36,32 @@ let CheckAuthGuard = class CheckAuthGuard {
         }
         const token = bearerToken.split('Bearer ')[1];
         try {
-            const decoded = this.jwtService.verify(token);
-            return true;
+            this.jwtService.verify(token, this.configService.get('jwt.accessKey'));
         }
-        catch (err) {
-            throw new common_1.UnauthorizedException('Invalid or expired token');
+        catch (error) {
+            if (error instanceof jwt_1.TokenExpiredError) {
+                throw new common_1.UnprocessableEntityException('Token arleady expired');
+            }
+            if (error instanceof jwt_1.NotBeforeError) {
+                throw new common_1.ConflictException('Token not before error');
+            }
+            if (error instanceof jwt_1.JsonWebTokenError) {
+                throw new common_1.BadRequestException(error.message);
+            }
+            return false;
         }
+        const userDecodedData = this.jwtService.decode(token);
+        request.userId = userDecodedData?.id;
+        request.role = "user";
+        console.log(token);
+        return true;
     }
 };
 exports.CheckAuthGuard = CheckAuthGuard;
 exports.CheckAuthGuard = CheckAuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [core_1.Reflector,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        config_1.ConfigService])
 ], CheckAuthGuard);
 //# sourceMappingURL=check-auth.guard.js.map

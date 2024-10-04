@@ -12,13 +12,14 @@ const sequelize_1 = require("@nestjs/sequelize");
 const models_1 = require("./models");
 const category_service_1 = require("./category.service");
 const category_controller_1 = require("./category.controller");
+const jwt_1 = require("@nestjs/jwt");
 let CategoryModule = class CategoryModule {
 };
 exports.CategoryModule = CategoryModule;
 exports.CategoryModule = CategoryModule = __decorate([
     (0, common_1.Module)({
         imports: [sequelize_1.SequelizeModule.forFeature([models_1.Category])],
-        providers: [category_service_1.CategoryService],
+        providers: [category_service_1.CategoryService, jwt_1.JwtService],
         controllers: [category_controller_1.CategoryController],
     })
 ], CategoryModule);

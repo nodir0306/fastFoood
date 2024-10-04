@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./app.config"), exports);
 __exportStar(require("./database.config"), exports);
 __exportStar(require("./multer.config"), exports);
+__exportStar(require("./jwt.config"), exports);
 //# sourceMappingURL=index.js.map
